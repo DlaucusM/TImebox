@@ -15,13 +15,17 @@ public class TImeRepeat : MonoBehaviour
 
     public int runs = 1500;
     public float straightChance = 0.7f;
+    public int maxRoomSize = 7;
+    public int minRoomSize = 3;
+    public int comboNeeded = 0;
 
 
     private void Start()
     {
         map = new int[rows, cols];
-        InvokeRepeating("running", 2.0f, 1.0f);
+        InvokeRepeating("running", 2.0f, .2f);
     }
+    //Iterates over the arry 
     private void resetMap()
     {
         for (int i = 0; i < rows; i++)
@@ -32,12 +36,20 @@ public class TImeRepeat : MonoBehaviour
             }
         }
     }
+    //Just runs the program once 
     private void running()
     {
         resetMap();
+        //More walkers means that the start will be closer to the center
+        Walker();
+        Walker();
+        Walker();
+        Walker();
+        Walker();
         Walker();
         Texture();
     }
+    //Applies a tile image to all of te grid icons (Binary)
     private void Texture() 
     {
         for (var i = 0; i < rows; ++i)
@@ -55,6 +67,7 @@ public class TImeRepeat : MonoBehaviour
             }
         }
     }
+   //Creates a walker that walks around an empty map and creates the map around them
     private void Walker()
     {
         int walkerX = rows/2;
@@ -64,10 +77,15 @@ public class TImeRepeat : MonoBehaviour
 
         for (int i = 0;i < runs; ++i)
         {
+            //Possible actions
+            //  Moving straight
+            //  Turning 90
+            //  Create a room on the walkers current location
+
             float action = Random.Range(0f, 1f);
             if (action > 1f - straightChance)
             {
-                if (combo > 5) room(walkerX, walkerY);
+                if (combo > comboNeeded) room(walkerX, walkerY);
                 else
                 {
                     combo += 1;
@@ -91,6 +109,7 @@ public class TImeRepeat : MonoBehaviour
             
         }
     }
+    //Walker turns 90 degrees
     private int rotate(int rotation, int direction)
     {
         direction += rotation;
@@ -104,6 +123,7 @@ public class TImeRepeat : MonoBehaviour
         }
         return direction;
     }
+    //Walker moves forward in its current dirrection
     private int[] forward(int direction, int walkerX, int walkerY)
     {
         int[] sendBack = new int[3];
@@ -153,16 +173,15 @@ public class TImeRepeat : MonoBehaviour
         sendBack[2] = direction;
         return sendBack;
     }
+    //Walker creates a random room size on its current location
     private void room(int walkerX, int walkerY)
     {
-        Debug.Log("ran");
-        int roomX = 5;
-        int roomY = 5;
-        for (int i = 0; i < roomX; i++)
+        int size = Random.Range(minRoomSize, maxRoomSize);
+        for (int i = 0; i < size; i++)
         {
-            for (int j = 0; j < roomY; j++)
+            for (int j = 0; j < size; j++)
             {
-                map[walkerX - (roomX/2) + i, walkerY - (roomY/2) + j] = 1;
+                map[walkerX - (size/2) + i, walkerY - (size/2) + j] = 1;
             }
         }
     }

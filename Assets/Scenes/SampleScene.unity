@@ -156,8 +156,11 @@ MonoBehaviour:
   tilemap: {fileID: 611823913}
   tileBase1: {fileID: 11400000, guid: d9e98b3bcade7204fa6dfdb7a03e5c51, type: 2}
   tileBase2: {fileID: 11400000, guid: 08260a9c2ec38ea4584d6860d97162ae, type: 2}
-  runs: 1500
+  runs: 2500
   straightChance: 0.7
+  maxRoomSize: 5
+  minRoomSize: 3
+  comboNeeded: 5
 --- !u!4 &516120958
 Transform:
   m_ObjectHideFlags: 0
